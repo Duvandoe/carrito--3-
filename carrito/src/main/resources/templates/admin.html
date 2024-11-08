@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dashboard de Admin</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet">
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+        }
+        .sidebar {
+            min-width: 250px;
+            max-width: 250px;
+            height: 100vh;
+            background-color: #343a40;
+            color: white;
+            position: fixed;
+        }
+        .sidebar .nav-link {
+            color: white;
+        }
+        .content {
+            margin-left: 250px;
+            padding: 20px;
+        }
+    </style>
+</head>
+<body>
+
+    <!-- Barra lateral -->
+    <div class="sidebar d-flex flex-column p-3">
+        <h4 class="text-center py-2 border-bottom">Admin Dashboard</h4>
+        <ul class="nav flex-column my-4">
+            <li class="nav-item">
+                <a class="nav-link active" href="/admin/inicio">Inicio</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" href="/admin/cliente">Clientes</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" href="/admin/compras">Compras</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" href="/admin/productos">Productos</a>
+            </li>
+        </ul>
+        <hr>
+        <div class="d-grid">
+            <a href="/publico/inicio" class="btn btn-danger">Cerrar sesión</a>
+        </div>
+    </div>
+
+    <!-- Contenido principal -->
+    <div class="content">
+        <div class="container-fluid">
+            <h2 class="mt-4">Bienvenido al Dashboard</h2>
+            <p class="lead">Aquí puedes gestionar el sistema y ver información relevante.</p>
+
+            <!-- Sección de Tarjetas -->
+            <div class="row my-4">
+                <div class="col-md-4">
+                    <div class="card text-center">
+                        <div class="card-body">
+                            <h5 class="card-title">Usuarios</h5>
+                            <p class="card-text">Gestión de usuarios registrados</p>
+                            <a href="/admin/cliente" class="btn btn-primary">Ver detalles</a>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-4">
+                    <div class="card text-center">
+                        <div class="card-body">
+                            <h5 class="card-title">Reportes</h5>
+                            <p class="card-text">Genera y descarga reportes</p>
+                            <a href="#" class="btn btn-primary">Ver detalles</a>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-4">
+                    <div class="card text-center">
+                        <div class="card-body">
+                            <h5 class="card-title">Configuración</h5>
+                            <p class="card-text">Ajustes de la aplicación</p>
+                            <a href="#" class="btn btn-primary">Ver detalles</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>

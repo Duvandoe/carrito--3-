@@ -1,0 +1,141 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dashboard de Gestión de Productos</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+        }
+        .sidebar {
+            min-width: 250px;
+            max-width: 250px;
+            height: 100vh;
+            background-color: #343a40;
+            color: white;
+            position: fixed;
+        }
+        .sidebar .nav-link {
+            color: white;
+        }
+        .content {
+            margin-left: 250px;
+            padding: 20px;
+        }
+    </style>
+</head>
+<body>
+
+    <!-- Barra lateral -->
+    <div class="sidebar d-flex flex-column p-3">
+        <h4 class="text-center py-2 border-bottom">Admin Dashboard</h4>
+        <ul class="nav flex-column my-4">
+            <li class="nav-item">
+                <a class="nav-link active" href="/admin/inicio">Inicio</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" href="/admin/cliente">Clientes</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" href="/admin/compras">Compras</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" href="/admin/productos">Productos</a>
+            </li>
+        </ul>
+        <hr>
+        <div class="d-grid">
+            <a href="/publico/inicio" class="btn btn-danger">Cerrar sesión</a>
+        </div>
+    </div>
+
+    <div class="content">
+        <div class="container-fluid">
+            <h1 class="text-center mb-4">Gestión de Productos</h1>
+
+            <!-- Botón para abrir el modal de añadir producto -->
+            <div class="text-end mb-3">
+                <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#productoModal">
+                    <i class="fas fa-plus"></i> Añadir Producto
+                </button>
+            </div>
+
+            <!-- Tabla de productos -->
+            <table class="table table-striped table-bordered">
+                <thead class="table-dark">
+                    <tr>
+                        <th>ID Producto</th>
+                        <th>Nombre</th>
+                        <th>Precio</th>
+                        <th>Stock</th>
+                        <th>Imagen</th>
+                        <th>Acciones</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr th:each="producto : ${productos}">
+                        <td th:text="${producto.idProducto}">1</td>
+                        <td th:text="${producto.nombres}">Nombre del Producto</td>
+                        <td th:text="${producto.precio}">0.00</td>
+                        <td th:text="${producto.stock}">0</td>
+                        <td>
+                            <img th:src="@{/productos/{id}/foto(id=${producto.idProducto})}" 
+                             alt="${producto.nombres}" 
+                             style="width: 100px; height: auto;" />
+                        </td>
+                        <td>
+                            <a class="btn btn-danger btn-sm" th:href="@{/admin/eliminar(id=${producto.idProducto})}" 
+                               onclick="return confirm('¿Estás seguro de que deseas eliminar este producto?');">Eliminar</a>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+    <!-- Modal para añadir producto -->
+<div class="modal fade" id="productoModal" tabindex="-1" aria-labelledby="productoModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="productoModalLabel">Añadir Producto</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                    <form th:action="@{/admin/guardar}" th:object="${producto}" method="POST" enctype="multipart/form-data">
+                    <div class="mb-3">
+                        <label for="nombre" class="form-label">Nombre</label>
+                        <input type="text" class="form-control" id="nombre" th:field="*{nombres}" required>
+                    </div>
+                    <div class="mb-3">
+                        <label for="precio" class="form-label">Precio</label>
+                        <input type="number" class="form-control" id="precio" th:field="*{precio}" required>
+                    </div>
+                    <div class="mb-3">
+                        <label for="stock" class="form-label">Stock</label>
+                        <input type="number" class="form-control" id="stock" th:field="*{stock}" required>
+                    </div>
+                    <div class="mb-3">
+                        <label for="foto" class="form-label">Imagen</label>
+                        <input type="file" class="form-control" id="foto" name="file" accept="image/png" required>
+                    </div>
+                    <button type="submit" class="btn btn-primary">Guardar Producto</button>
+                </form>     
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+    <!-- Scripts de Bootstrap -->
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.6/dist/umd/popper.min.js" integrity="sha384-oBqDVmMz4fnFO9gybDqXa2T5pqG1U3gDLFT7/j1kVYt3MymDjlIW2MGG+2E8W5E7" crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.min.js" integrity="sha384-lbsVpCXYjOw4cSCokXdrZTQ0vcNr00QpTpB4wHjTKFMRXS4V/vQyMof/cRv0E52V" crossorigin="anonymous"></script>
+    <!--Script aparte de Bootstrap-->
+</body>
+</html>

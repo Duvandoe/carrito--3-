@@ -1,0 +1,149 @@
+<!DOCTYPE html>
+<html lang="es"  xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Admin - Gestión de Compras</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+        }
+        .sidebar {
+            min-width: 250px;
+            max-width: 250px;
+            height: 100vh;
+            background-color: #343a40;
+            color: white;
+            position: fixed;
+        }
+        .sidebar .nav-link {
+            color: white;
+        }
+        .content {
+            margin-left: 250px;
+            padding: 20px;
+        }
+    </style>
+</head>
+<body>
+
+    <!-- Barra lateral -->
+    <div class="sidebar d-flex flex-column p-3">
+        <h4 class="text-center py-2 border-bottom">Admin Dashboard</h4>
+        <ul class="nav flex-column my-4">
+            <li class="nav-item">
+                <a class="nav-link" href="/admin/inicio">Inicio</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" href="/admin/cliente">Clientes</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link active" href="/admin/compras">Compras</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" href="/admin/productos">Productos</a>
+            </li>
+        </ul>
+        <hr>
+        <div class="d-grid">
+            <a href="/publico/inicio" class="btn btn-danger">Cerrar sesión</a>
+        </div>
+    </div>
+
+    <!-- Contenido principal -->
+    <div class="content">
+        <div class="container-fluid">
+            <h2 class="mt-4">Gestión de Compras</h2>
+
+            <!-- Tabla de Compras -->
+            <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#comprasModal">
+                Realizar Compra
+            </button>
+            <div class="table-responsive mt-4">
+                <table class="table table-striped">
+                    <thead class="table-dark">
+                        <tr>
+                            <th>ID Compra</th>
+                            <th>Cliente</th>
+                            <th>Producto(s)</th>
+                            <th>Cantidad</th>
+                            <th>Total</th>
+                            <th>Fecha</th>
+                            <th>Accion</th>
+
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr th:each="compra : ${compras}">
+                            <td th:text="${compra.id}">ID Compra</td>
+                            <td th:text="${compra.persona.nombre} + ' ' + ${compra.persona.apellido}">Nombre Completo</td>
+                            <td>
+                                <span th:each="producto : ${compra.productos}" th:text="${producto.nombres}">Producto</span><br>
+                            </td>
+                            <td th:text="${compra.cantidad}">Total</td>
+                            <td th:text="${compra.total}">Total</td>
+                            <td th:text="${#dates.format(compra.fecha, 'yyyy-MM-dd HH:mm:ss')}">Fecha</td>
+                            <td>
+                               
+                                <a class="btn btn-danger btn-sm" th:href="@{/admin/eliminar(id=${compra.id})}" 
+                                   onclick="return confirm('¿Estás seguro de que deseas eliminar esta Compra?');">Eliminar</a>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        
+        </div>
+    </div>
+
+    <!-- Modal -->
+    <div class="modal fade" id="comprasModal" tabindex="-1" aria-labelledby="comprasModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="comprasModalLabel">Formulario de Compra</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <form action="#" th:action="@{/admin/realizar}" method="POST">
+                        <div class="mb-3">
+                            <label for="persona" class="form-label">Seleccionar Persona</label>
+                            <select class="form-select" id="persona" name="personaId" required>
+                                <option value="">Seleccione una persona</option>
+                                <th:block th:each="persona : ${personas}">
+                                    <option th:value="${persona.id}" th:text="${persona.nombre} + ' ' + ${persona.apellido}"></option>
+                                </th:block>
+                            </select>
+                        </div>
+
+                        <div class="mb-3">
+                            <label for="producto" class="form-label">Seleccionar Producto</label>
+                            <select class="form-select" id="producto" name="productoId" required>
+                                <option value="">Seleccione un producto</option>
+                                <th:block th:each="producto : ${productos}">
+                                    <option th:value="${producto.idProducto}" th:text="${producto.nombres} + ' - $' + ${producto.precio} + ' (Stock: ' + ${producto.stock} + ')'"></option>
+                                </th:block>
+                            </select>
+                        </div>
+
+                        <div class="mb-3">
+                            <label for="cantidad" class="form-label">Cantidad</label>
+                            <input type="number" id="cantidad" name="cantidad" class="form-control" min="1" max="10" value="1" required>
+                            <small class="form-text text-muted">Ingresa la cantidad de productos a comprar (máximo 10).</small>
+                        </div>
+
+                        <button type="submit" class="btn btn-primary">Comprar</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.6/dist/umd/popper.min.js" integrity="sha384-oBqDVmMz4fnFO9gybDqXa2T5pqG1U3gDLFT7/j1kVYt3MymDjlIW2MGG+2E8W5E7" crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.min.js" integrity="sha384-lbsVpCXYjOw4cSCokXdrZTQ0vcNr00QpTpB4wHjTKFMRXS4V/vQyMof/cRv0E52V" crossorigin="anonymous"></script>
+</body>
+</html>
+

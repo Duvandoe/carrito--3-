@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Iniciar Sesión - La Retacadora</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet">
+</head>
+
+<style>
+    nav{
+        border-bottom: 1px solid black;
+    }
+</style>
+
+<body>
+
+    <!-- Barra de navegación -->
+    <nav class="navbar navbar-expand-lg navbar-light">
+        <div class="container">
+            <a class="navbar-brand" href="#">La Retacadora</a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarNav">
+                <ul class="navbar-nav ms-auto">
+                    <li class="nav-item">
+                        <a class="nav-link" href="/admin/inicio">Inicio</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="/publico/productos">Productos</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="/publico/registrarse">Registro</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link active" aria-current="page" href="#">Iniciar Sesión</a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Formulario de inicio de sesión -->
+    <div class="container d-flex align-items-center justify-content-center min-vh-100">
+        <div class="card p-4 shadow-lg" style="max-width: 400px; width: 100%;">
+            <div class="card-body">
+                <h2 class="text-center mb-4">Iniciar Sesión</h2>
+                <form action="#" th:action="@{/publico/iniciarSesion}" method="POST">
+                    <div class="mb-3">
+                        <label for="usuario" class="form-label">Usuario</label>
+                        <input type="text" class="form-control" id="usuario" name="usuario" placeholder="Ingresa tu usuario" required>
+                    </div>
+                    <div class="mb-3">
+                        <label for="contrasena" class="form-label">Contraseña</label>
+                        <input type="password" class="form-control" id="contrasena" name="contrasena" placeholder="Ingresa tu contraseña" required>
+                    </div>
+                    <button type="submit" class="btn btn-primary w-100">Ingresar</button>
+                </form>
+                
+                <p class="text-center mt-3">
+                    ¿No tienes una cuenta? <a href="/publico/registrarse">Regístrate aquí</a>
+                </p>
+            </div>
+        </div>
+    </div>
+
+    <!-- Footer -->
+    <footer class="bg-dark text-white text-center py-4">
+        <div class="container">
+            <p class="mb-0">© 2024 La Retacadora. Todos los derechos reservados.</p>
+        </div>
+    </footer>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>
