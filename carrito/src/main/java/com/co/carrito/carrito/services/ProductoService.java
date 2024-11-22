@@ -15,4 +15,6 @@ public interface ProductoService {
 	public Producto obtenerProductoPorId(int id);  
 
 	public void agregarProducto(Producto producto, MultipartFile file);
+
+	public Producto ActualizarProducto(Producto producto, MultipartFile file);
 }

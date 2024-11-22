@@ -82,11 +82,12 @@
                         <td th:text="${producto.precio}">0.00</td>
                         <td th:text="${producto.stock}">0</td>
                         <td>
-                            <img th:src="@{${producto.foto}}" alt="Foto del producto" style="width: 100px; height: auto;">
+                            <img th:src="@{${producto.foto}}" alt="Foto del producto" style="width: 100px; height: 100px;">
                         </td>
                         <td>
+                            <a href="/admin/editarProducto/${producto.idProducto}" class="btn btn-sm btn-warning">Editar</a>
                             <a class="btn btn-danger btn-sm" th:href="@{/admin/eliminar(id=${producto.idProducto})}" 
-                               onclick="return confirm('¿Estás seguro de que deseas eliminar este producto?');">Eliminar</a>
+                            onclick="return confirm('¿Estás seguro de que deseas eliminar este producto?');">Eliminar</a>
                         </td>
                     </tr>
                 </tbody>

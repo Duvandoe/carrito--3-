@@ -133,6 +133,11 @@ public class AdminController {
         return "redirect:/admin/productos";
     }
 
+    
+
+
+    
+
     @GetMapping("/borrar/{id}")
     public String EliminarPersona(@PathVariable("id") int id){
         personaService.borrarPersona(id);
@@ -142,11 +147,22 @@ public class AdminController {
     
     
     @PostMapping("/actualizar/{id}")
-public String actualizarPersona(@PathVariable("id") int id, @ModelAttribute("persona") Persona persona) {
-    persona.setId(id); // Establece el ID para asegurar que se actualice el registro
-    personaService.actualizarPersona(persona);
-    return "redirect:/admin/cliente"; // Redirige a la lista después de actualizar
+    public String actualizarPersona(@PathVariable("id") int id, @ModelAttribute("persona") Persona persona) {
+        persona.setId(id); // Establece el ID para asegurar que se actualice el registro
+        personaService.actualizarPersona(persona);
+        return "redirect:/admin/cliente"; // Redirige a la lista después de actualizar
+    }
+
+    @PostMapping("/actualizarProducto/{idProducto}")
+    public String actualizarProducto(@PathVariable("idProducto") int idProducto,
+                                    @ModelAttribute("producto") Producto producto,
+                                    @RequestParam("file") MultipartFile file) {
+    producto.setIdProducto(idProducto); // Establece el ID del producto
+    productoService.ActualizarProducto(producto, file);
+    return "redirect:/admin/productos"; // Redirige a la lista de productos
 }
+
+    
 
 
     @GetMapping("/editar/{id}")
@@ -154,6 +170,16 @@ public String actualizarPersona(@PathVariable("id") int id, @ModelAttribute("per
         Persona persona = personaService.encontrarPersona(id);
         modelo.addAttribute("persona", persona); // Añade persona al modelo para el formulario
         return "Editarpersona";
+    }
+
+    @GetMapping("/editarProducto/{idProducto}")
+    public String EditarProducto(@PathVariable int idProducto, Model modelo) {
+        Producto producto = productoService.obtenerProductoPorId(idProducto);
+        if (producto == null) {
+            throw new IllegalArgumentException("Producto no encontrado con ID: " + idProducto);
+        }
+        modelo.addAttribute("producto", producto);
+        return "EditarProducto"; // Nombre de la plantilla Thymeleaf
     }
     
     @DeleteMapping("/{id}")
