@@ -82,9 +82,7 @@
                         <td th:text="${producto.precio}">0.00</td>
                         <td th:text="${producto.stock}">0</td>
                         <td>
-                            <img th:src="@{/productos/{id}/foto(id=${producto.idProducto})}" 
-                             alt="${producto.nombres}" 
-                             style="width: 100px; height: auto;" />
+                            <img th:src="@{${producto.foto}}" alt="Foto del producto" style="width: 100px; height: auto;">
                         </td>
                         <td>
                             <a class="btn btn-danger btn-sm" th:href="@{/admin/eliminar(id=${producto.idProducto})}" 
@@ -119,8 +117,8 @@
                         <input type="number" class="form-control" id="stock" th:field="*{stock}" required>
                     </div>
                     <div class="mb-3">
-                        <label for="foto" class="form-label">Imagen</label>
-                        <input type="file" class="form-control" id="foto" name="file" accept="image/png" required>
+                        <label for="file" class="form-label">Imagen</label>
+                        <input type="file" class="form-control" id="foto" name="file" accept="image/*" required>
                     </div>
                     <button type="submit" class="btn btn-primary">Guardar Producto</button>
                 </form>     

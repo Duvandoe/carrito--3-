@@ -8,7 +8,6 @@ import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
-import jakarta.persistence.Lob;
 import jakarta.persistence.ManyToMany;
 import jakarta.persistence.Table;
 import jakarta.persistence.Transient;
@@ -24,8 +23,8 @@ public class Producto {
 	@Column(name = "Nombre_Producto")
 	private String Nombres;
 	
-	@Lob
-    private byte[] Foto;
+	@Column(name = "foto")
+    private String Foto;
 	
 	@Column(name = "Descripcion")
 	private String Descripcion;
@@ -42,7 +41,7 @@ public class Producto {
 	@ManyToMany(mappedBy = "productos")
 	private List<Comprar> compras = new ArrayList<>();
 
-	public Producto(int idProducto, String Nombres, byte[] Foto, String Descripcion, Double Precio, int Stock, String fotoBase64) {
+	public Producto(int idProducto, String Nombres, String Foto, String Descripcion, Double Precio, int Stock, String fotoBase64) {
 		this.idProducto = idProducto;
 		this.Nombres = Nombres;
 		this.Foto = Foto;
@@ -52,7 +51,7 @@ public class Producto {
 		this.fotoBase64 = fotoBase64;
 	}
 
-	public Producto(String Nombres, byte[] Foto, String Descripcion, Double Precio, int Stock, String fotoBase64) {
+	public Producto(String Nombres, String Foto, String Descripcion, Double Precio, int Stock, String fotoBase64) {
 		this.Nombres = Nombres;
 		this.Foto = Foto;
 		this.Descripcion = Descripcion;
@@ -82,11 +81,11 @@ public class Producto {
 		this.Nombres = Nombres;
 	}
 
-	public byte[] getFoto() {
+	public String getFoto() {
 		return Foto;
 	}
 
-	public void setFoto(byte[] Foto) {
+	public void setFoto(String Foto) {
 		this.Foto = Foto;
 	}
 

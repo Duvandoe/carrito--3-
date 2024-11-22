@@ -156,14 +156,7 @@
                         <div class="col-md-4 mb-4" th:each="producto : ${productos}">
                             <div class="card">
                                 <div class="card-body">
-                                    <img th:if="${producto.fotoBase64 != null}" 
-                                    th:src="'data:image/jpeg;base64,' + ${producto.fotoBase64}" 
-                                    alt="Imagen de ${producto.nombres}" 
-                                    class="card-img-top">
-
-                                    <img th:if="${producto.fotoBase64 == null}" 
-                                    src="/ruta/a/imagen/por/defecto.jpg" 
-                                    alt="Imagen no disponible" 
+                                    <img th:src="@{${producto.foto}}" alt="Foto del producto"
                                     class="card-img-top">
                                     <h5 class="card-title" th:text="${producto.nombres}">Nombre del Producto</h5>
                                     <p class="card-text" th:text="${producto.descripcion}">Descripción del Producto</p>
