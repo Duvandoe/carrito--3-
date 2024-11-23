@@ -21,7 +21,6 @@ import com.co.carrito.carrito.models.Producto;
 import com.co.carrito.carrito.repository.PersonasRepository;
 import com.co.carrito.carrito.repository.ProductoRepository;
 import com.co.carrito.carrito.services.CarritoService;
-import com.co.carrito.carrito.services.FotoService;
 import com.co.carrito.carrito.services.PersonaService;
 import com.co.carrito.carrito.services.ProductoService;
 
@@ -36,16 +35,14 @@ public class AdminController {
     private final ProductoRepository productoRepository;
     private final ProductoService productoService;
     private final PersonaService personaService;
-    private final FotoService fotoService;
 
 
-    public AdminController(CarritoService compraService, PersonasRepository personaRepository, ProductoRepository productoRepository, ProductoService productoService, PersonaService personaService, FotoService fotoService) {
+    public AdminController(CarritoService compraService, PersonasRepository personaRepository, ProductoRepository productoRepository, ProductoService productoService, PersonaService personaService) {
         this.compraService = compraService;
         this.personaRepository = personaRepository;
         this.productoRepository = productoRepository;
         this.productoService = productoService;
         this.personaService = personaService;
-        this.fotoService = fotoService;
     }
 
     @GetMapping("/inicio")
