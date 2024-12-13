@@ -87,6 +87,9 @@
     .card {
         border-radius: 10px;
         overflow: hidden;
+        display: flex;
+    flex-direction: column;
+    height: 100%;   
         box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
         transition: transform 0.3s ease, box-shadow 0.3s ease;
     }
@@ -96,7 +99,14 @@
         box-shadow: 0 8px 30px rgba(0, 0, 0, 0.2);
     }
 
+    .card-body {
+    flex-grow: 1;
+}
+
     .card-img-top {
+        object-fit: cover; /* Hace que la imagen se recorte si es necesario para mantener el tamaño */
+        height: 300px;
+        width: 100%;
         border-radius: 10px;
         transition: transform 0.3s ease;
     }
@@ -306,14 +316,43 @@
     </button>
 </div>
 
-    <!-- Sección de sobre nosotros -->
-    <section class="bg-light py-5">
-        <div class="container">
-            <h2 class="text-center mb-4">Sobre Nosotros</h2>
-            <p class="text-center">En La Retacadora nos dedicamos a ofrecer productos de calidad para todos nuestros clientes. Contamos con una amplia gama de productos para satisfacer todas tus necesidades.</p>
-            <p class="text-center">Nuestro compromiso es brindarte una experiencia de compra única, segura y eficiente.</p>
+<section class="bg-light py-5">
+    <div class="container text-center">
+        <h2 class="mb-4 display-4 text-primary">Quiénes Somos</h2>
+        <p class="lead mb-4">En <strong>La Retacadora</strong>, ofrecemos productos electrónicos de alta calidad, diseñados para satisfacer todas tus necesidades tecnológicas. Nuestra misión es proporcionarte una experiencia de compra sin igual, con un enfoque en la confianza, la calidad y el servicio al cliente.</p>
+        
+        <div class="row justify-content-center">
+            <div class="col-lg-4 mb-3">
+                <div class="card shadow-lg border-light">
+                    <div class="card-body">
+                        <h5 class="card-title text-primary">Calidad Garantizada</h5>
+                        <p>Trabajamos con las mejores marcas para asegurarnos de que recibas productos duraderos y de excelente rendimiento.</p>
+                    </div>
+                </div>
+            </div>
+            <div class="col-lg-4 mb-3">
+                <div class="card shadow-lg border-light">
+                    <div class="card-body">
+                        <h5 class="card-title text-primary">Atención Personalizada</h5>
+                        <p>Nuestro equipo de expertos está disponible para guiarte en cada paso, asegurando que encuentres lo que necesitas.</p>
+                    </div>
+                </div>
+            </div>
+            <div class="col-lg-4 mb-3">
+                <div class="card shadow-lg border-light">
+                    <div class="card-body">
+                        <h5 class="card-title text-primary">Experiencia Segura</h5>
+                        <p>Tu seguridad es nuestra prioridad. Navega, compra y recibe tus productos con total confianza, respaldados por nuestro sistema seguro.</p>
+                    </div>
+                </div>
+            </div>
         </div>
-    </section>
+
+        <p class="mt-4">Desde nuestro inicio, nos hemos comprometido a ofrecer solo lo mejor, brindando soluciones innovadoras y una experiencia única para cada uno de nuestros clientes. ¡Gracias por elegirnos!</p>
+    </div>
+</section>
+
+
 
     <!-- Galería de productos en oferta -->
     <section class="py-5">

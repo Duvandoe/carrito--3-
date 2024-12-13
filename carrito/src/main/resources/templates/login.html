@@ -8,8 +8,26 @@
 </head>
 
 <style>
-    nav{
-        border-bottom: 1px solid black;
+    nav {
+        background-color: #343a40;
+        box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    }
+
+    nav .navbar-brand {
+        color: #fff !important;
+        font-size: 1.5rem;
+        font-weight: bold;
+    }
+
+    nav .navbar-nav .nav-link {
+        color: #bbb;
+        font-size: 1.1rem;
+        gap: 1px;
+    }
+
+    nav .navbar-nav .nav-link:hover {
+        color: #f39c12;
+        transition: 0.3s;
     }
 
      /* Estilos generales */
@@ -197,6 +215,12 @@
     <footer class="bg-dark text-white text-center py-4">
         <div class="container">
             <p class="mb-0">© 2024 La Retacadora. Todos los derechos reservados.</p>
+            <p class="mb-0">Síguenos en nuestras redes sociales:</p>
+            <div class="social-icons">
+                <a href="#" class="text-white mx-2"><i class="bi bi-facebook"></i></a>
+                <a href="#" class="text-white mx-2"><i class="bi bi-twitter"></i></a>
+                <a href="#" class="text-white mx-2"><i class="bi bi-instagram"></i></a>
+            </div>
         </div>
     </footer>
 

@@ -35,9 +35,15 @@
         color: #f39c12;
         transition: 0.3s;
     }
+    .card-body {
+    flex-grow: 1;
+}
 
     .card {
         border-radius: 10px;
+        display: flex;
+        flex-direction: column;
+        height: 100%;
         overflow: hidden;
         box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
         transition: transform 0.3s ease, box-shadow 0.3s ease;
@@ -49,6 +55,9 @@
     }
 
     .card-img-top {
+        object-fit: cover; /* Hace que la imagen se recorte si es necesario para mantener el tamaño */
+    height: 200px; /* Tamaño fijo para todas las imágenes */
+    width: 100%;
         border-radius: 10px;
         transition: transform 0.3s ease;
     }
@@ -117,6 +126,7 @@
         align-items: center;
     }
 
+
 </style>
 
 <body>
@@ -183,8 +193,8 @@
     </div>
 </section>
 
-<!-- Botón para mostrar el carrito -->
-<button id="carrito-btn" class="btn btn-success" onclick="mostrarModalCompra()">Ir al carrito</button>
+<!-- Botón para mostrar el carrito<button id="carrito-btn" class="btn btn-success" onclick="mostrarModalCompra()">Ir al carrito</button> -->
+
 
 <!-- Modal para mostrar el carrito y proceder a la compra -->
 <div class="modal fade" id="compraModal" tabindex="-1" aria-labelledby="compraModalLabel" aria-hidden="true">
