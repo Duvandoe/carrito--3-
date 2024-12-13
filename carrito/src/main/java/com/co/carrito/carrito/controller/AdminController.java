@@ -222,6 +222,24 @@ public String EditarPersona(@PathVariable int id, Model modelo) {
         }
     }
 
+    @GetMapping("/generarReporteCompra")
+public ResponseEntity<String> generarReporteCompra() {
+    try {
+        reporteService.generarReporteCompra();
+        return ResponseEntity.ok("Reporte generado correctamente");
+    } catch (IOException e) {
+        return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
+                             .body("Error de entrada/salida al generar el reporte: " + e.getMessage());
+    } catch (JRException e) {
+        return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
+                             .body("Error al procesar el reporte Jasper: " + e.getMessage());
+    } catch (Exception e) {
+        return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
+                             .body("Error inesperado: " + e.getMessage());
+    }
+}
+
+
     // Ejemplo de un método en tu controlador para obtener la cantidad de clientes y productos
     @GetMapping("/admin/iniciodashboard")
     public String dashboard(Model model) {

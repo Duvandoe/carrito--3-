@@ -6,4 +6,5 @@ import net.sf.jasperreports.engine.JRException;
 
 public interface ReporteService {
     void generarReporte() throws JRException, IOException;
+    void generarReporteCompra() throws JRException, IOException;
 }
