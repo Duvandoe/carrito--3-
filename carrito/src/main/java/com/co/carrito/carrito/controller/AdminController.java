@@ -1,6 +1,9 @@
 package com.co.carrito.carrito.controller;
 
+import java.io.IOException;
 import java.util.List;
+
+import javax.servlet.http.HttpServletResponse;
 
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
@@ -23,6 +26,9 @@ import com.co.carrito.carrito.repository.ProductoRepository;
 import com.co.carrito.carrito.services.CarritoService;
 import com.co.carrito.carrito.services.PersonaService;
 import com.co.carrito.carrito.services.ProductoService;
+import com.co.carrito.carrito.services.ReporteService;
+
+import net.sf.jasperreports.engine.JRException;
 
 
 
@@ -35,14 +41,17 @@ public class AdminController {
     private final ProductoRepository productoRepository;
     private final ProductoService productoService;
     private final PersonaService personaService;
+    private final ReporteService reporteService;
 
 
-    public AdminController(CarritoService compraService, PersonasRepository personaRepository, ProductoRepository productoRepository, ProductoService productoService, PersonaService personaService) {
+    public AdminController(CarritoService compraService, PersonasRepository personaRepository, ProductoRepository productoRepository
+    , ProductoService productoService, PersonaService personaService, ReporteService reporteService) {
         this.compraService = compraService;
         this.personaRepository = personaRepository;
         this.productoRepository = productoRepository;
         this.productoService = productoService;
         this.personaService = personaService;
+        this.reporteService = reporteService;
     }
 
     @GetMapping("/inicio")
@@ -198,6 +207,11 @@ public String EditarPersona(@PathVariable int id, Model modelo) {
             return ResponseEntity.noContent().build();
         }
         return ResponseEntity.ok(personas);
+    }
+
+    @GetMapping("/generarReporte")
+    public void generarReporte(HttpServletResponse response) throws JRException, IOException {
+        reporteService.generarReporte(response);  // Pasa la respuesta al servicio
     }
     
 }
