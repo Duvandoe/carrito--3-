@@ -3,8 +3,7 @@ package com.co.carrito.carrito.controller;
 import java.io.IOException;
 import java.util.List;
 
-import javax.servlet.http.HttpServletResponse;
-
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -210,8 +209,13 @@ public String EditarPersona(@PathVariable int id, Model modelo) {
     }
 
     @GetMapping("/generarReporte")
-    public void generarReporte(HttpServletResponse response) throws JRException, IOException {
-        reporteService.generarReporte(response);  // Pasa la respuesta al servicio
+    public ResponseEntity<String> generarReporte() {
+        try {
+            reporteService.generarReporte();
+            return ResponseEntity.ok("Reporte generado correctamente");
+        } catch (IOException | JRException e) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Error al generar el reporte");
+        }
     }
     
 }

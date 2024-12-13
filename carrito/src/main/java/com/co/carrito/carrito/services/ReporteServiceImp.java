@@ -2,14 +2,10 @@ package com.co.carrito.carrito.services;
 
 import java.io.IOException;
 import java.io.InputStream;
-import java.util.List;
-
-import javax.servlet.http.HttpServletResponse;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import com.co.carrito.carrito.models.Persona;
 import com.co.carrito.carrito.repository.PersonasRepository;
 
 import net.sf.jasperreports.engine.JRException;
@@ -25,33 +21,17 @@ public class ReporteServiceImp implements ReporteService {
     private PersonasRepository personasRepository;
 
     @Override
-    public void generarReporte(HttpServletResponse response) throws JRException, IOException {
-        try {
-            // Obtener el archivo del reporte Jasper
-            InputStream jasperStream = getClass().getResourceAsStream("/reportes/ReportePersona.jasper");
+    public void generarReporte() throws JRException, IOException {
+        // Obtener el archivo del reporte Jasper
+        InputStream jasperStream = getClass().getResourceAsStream("../reportes/ReportePersona2.jasper");
 
-            if (jasperStream == null) {
-                throw new IOException("No se encontró el archivo .jasper");
-            }
+        // Rellenar el reporte con los datos
+        JasperPrint jasperPrint = JasperFillManager.fillReport(jasperStream, null, new JRBeanCollectionDataSource(personasRepository.findAll()));
 
-            List<Persona> personas = personasRepository.findAll();
-            System.out.println(personas);
-            // Rellenar el reporte con los datos
-            JasperPrint jasperPrint = JasperFillManager.fillReport(jasperStream, null, new JRBeanCollectionDataSource(personas));
-
-            // Establecer la respuesta HTTP para enviar el reporte como un archivo PDF
-            response.setContentType("application/pdf");
-            response.setHeader("Content-Disposition", "inline; filename=ReportePersonas.pdf");
-
-            // Exportar el reporte a PDF
-            JasperExportManager.exportReportToPdfStream(jasperPrint, response.getOutputStream());
-        } catch (JRException | IOException e) {
-            // Manejo de excepciones
-            response.sendError(HttpServletResponse.SC_INTERNAL_SERVER_ERROR, "Error al generar el reporte: " + e.getMessage());
-        }
+        String outputPath = "C:/Users/USUARIO/Desktop/reportes/ReportePersonas.pdf"; // Ruta absoluta
+        JasperExportManager.exportReportToPdfFile(jasperPrint, outputPath);
     }
 }
-
 
 
 
