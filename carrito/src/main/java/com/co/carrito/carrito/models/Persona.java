@@ -40,7 +40,7 @@ public class Persona {
     @JoinColumn(name = "rol_id") // FK en la tabla Persona
     private Rol rol;
 
-    @OneToMany(mappedBy = "persona", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    @OneToMany(mappedBy = "persona", cascade = CascadeType.ALL, fetch = FetchType.EAGER)
     private List<Comprar> compras;
 
     public Persona(String usuario,String nombre, String apellido, String correo, String telefono, String contrasena) {

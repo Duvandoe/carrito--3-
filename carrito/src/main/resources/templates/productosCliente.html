@@ -143,28 +143,29 @@
                 <li class="nav-item"><a class="nav-link" href="/publico/inicio">Inicio</a></li>
                 <li class="nav-item"><a class="nav-link" href="/publico/productos">Productos</a></li>
 
-                <li class="nav-item dropdown" style="cursor: pointer;">
-                    <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
-                        <img src="https://w7.pngwing.com/pngs/833/426/png-transparent-shopping-cart-icon-shopping-cart-black-design-trade-thumbnail.png" alt="Carrito" width="30" height="30" id="carrito-icono">
-                    </a>
-                    <ul class="dropdown-menu" aria-labelledby="navbarDropdown" id="carrito-dropdown">
-                        <li><h6 class="dropdown-header">Tu Carrito</h6></li>
-                        <div id="productos-carrito-dropdown"></div>
-                        <li><hr class="dropdown-divider"></li>
-                        <button class="dropdown-item" id="realizar-compra" onclick="mostrarModalCompra()">Realizar Compra</button>
-                    </ul>
-                </li>
+                <!-- Carrito de compras en la barra de navegación -->
+<li class="nav-item dropdown" style="cursor: pointer;">
+    <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+        <img src="https://w7.pngwing.com/pngs/833/426/png-transparent-shopping-cart-icon-shopping-cart-black-design-trade-thumbnail.png" alt="Carrito" width="30" height="30" id="carrito-icono">
+    </a>
+    <ul class="dropdown-menu" aria-labelledby="navbarDropdown" id="carrito-dropdown">
+        <li><h6 class="dropdown-header">Tu Carrito</h6></li>
+        <div id="productos-carrito-dropdown"></div>
+        <li><hr class="dropdown-divider"></li>
+        <button class="dropdown-item" id="realizar-compra" onclick="mostrarModalCompra()">Realizar Compra</button>
+    </ul>
+</li>
 
-                <li th:if="${session.usuarioLogueado != null}" class="nav-item">
-                    <span class="nav-link">Bienvenido, <b th:text="${session.usuarioLogueado}"></b></span>
+                <li th:if="${session.usuario != null}" class="nav-item">
+                    <span class="nav-link">Bienvenido, <b th:text="${session.usuario.nombre}"></b></span>
                 </li>
-                <li th:if="${session.usuarioLogueado != null}" class="nav-item">
+                <li th:if="${session.usuario != null}" class="nav-item">
                     <a class="nav-link" href="/publico/logout">Cerrar sesión</a>
                 </li>
-                <li th:if="${session.usuarioLogueado == null}" class="nav-item">
+                <li th:if="${session.usuario == null}" class="nav-item">
                     <a class="nav-link" href="/publico/registrarse">Registro</a>
                 </li>
-                <li th:if="${session.usuarioLogueado == null}" class="nav-item">
+                <li th:if="${session.usuario == null}" class="nav-item">
                     <a class="nav-link" href="/publico/login">Iniciar Sesión</a>
                 </li>
             </ul>
@@ -182,10 +183,11 @@
                     <div class="card-body">
                         <img th:src="@{${producto.foto}}" alt="Foto del producto" class="card-img-top">
                         <h5 class="card-title" th:text="${producto.nombres}">Nombre del Producto</h5>
+                        <p class="card-text" th:text="${producto.idProducto}">ID</p>
                         <p class="card-text" th:text="${producto.descripcion}">Descripción del Producto</p>
                         <p class="card-text"><strong th:text="'Precio: $' + ${producto.precio}">Precio</strong></p>
                         <p class="card-text"><strong th:text="'Stock: ' + ${producto.stock}">Stock</strong></p>
-                        <a href="#" class="btn btn-primary w-100" data-id="${producto.id}" onclick="agregarAlCarrito(this)">Agregar al carrito</a>
+                        <a href="#" class="btn btn-primary w-100" th:attr="data-id=${producto.idProducto}" onclick="agregarAlCarrito(this)">Agregar al carrito</a>
                     </div>
                 </div>
             </div>
@@ -217,13 +219,13 @@
     </div>
 </div>
 
-<!-- Modal para el carrito -->
+<!-- Modal de carrito -->
 <div id="carrito-modal">
     <div id="carrito-contenido">
-        <h4>Productos en tu carrito</h4>
-        <ul id="productos-carrito-modal"></ul>
-        <button onclick="cerrarCarrito()">Cerrar</button>
-        <button onclick="finalizarCompra()">Finalizar Compra</button>
+        <h5>Carrito de Compras</h5>
+        <div id="productos-carrito-modal"></div>
+        <button class="btn btn-success" id="finalizar-compra" onclick="finalizarCompra()">Finalizar Compra</button>
+        <button class="btn btn-secondary" onclick="cerrarCarrito()">Cerrar</button>
     </div>
 </div>
 
@@ -241,45 +243,55 @@
         let carrito = [];
     
         function agregarAlCarrito(button) {
-            const idProducto = button.getAttribute('data-id');
-            const nombreProducto = button.parentElement.querySelector('.card-title').innerText;
-            const precioProducto = parseFloat(button.parentElement.querySelector('.card-text strong').innerText.replace('$', ''));
+    const idProducto = button.getAttribute('data-id');
+    const cantidad = 1; // Puedes modificarlo si tienes un campo para cantidad.
     
-            const producto = {
-                id: idProducto,
-                nombre: nombreProducto,
-                precio: precioProducto,
-                cantidad: 1
-            };
+    fetch('/publico/compra', {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/x-www-form-urlencoded',
+        },
+        body: `productoId=${idProducto}&cantidad=${cantidad}`,
+    })
+    .then(response => response.text())
+    .then(data => {
+        alert(data); // Mostrar el mensaje del backend.
+        actualizarCarrito(); // Opcional, para actualizar el carrito visualmente.
+    })
+    .catch(error => console.error('Error:', error));
     
-            // Verificar si el producto ya está en el carrito
-            let productoExistente = carrito.find(item => item.id === idProducto);
-            if (productoExistente) {
-                productoExistente.cantidad += 1; // Aumentar cantidad si ya existe en el carrito
-            } else {
-                carrito.push(producto); // Agregar al carrito si no existe
-            }
-    
-            // Actualizar el carrito en el dropdown
-            actualizarCarrito();
-        }
-    
-        function actualizarCarrito() {
+}
+function actualizarCarrito() {
+    fetch('/publico/carrito')
+        .then(response => response.json())
+        .then(data => {
             const carritoDropdown = document.getElementById('productos-carrito-dropdown');
-            carritoDropdown.innerHTML = ''; // Limpiar el contenido actual del carrito
-    
+            carritoDropdown.innerHTML = ''; // Limpiar el carrito.
+
             let total = 0;
-            carrito.forEach(item => {
-                total += item.precio * item.cantidad;
-                const itemCarrito = document.createElement('p');
-                itemCarrito.innerText = `${item.nombre} - Cantidad: ${item.cantidad} - $${(item.precio * item.cantidad).toFixed(2)}`;
-                carritoDropdown.appendChild(itemCarrito);
-            });
-    
-            // Actualizar el total de la compra
+            data.forEach(item => {
+                    total += item.precio * item.cantidad;
+
+                    // Crear item para el dropdown
+                    const itemCarritoDropdown = document.createElement('p');
+                    itemCarritoDropdown.innerText = `${item.nombre} - Cantidad: ${item.cantidad} - $${(item.precio * item.cantidad).toFixed(2)}`;
+                    carritoDropdown.appendChild(itemCarritoDropdown);
+
+                    // Crear item para el modal
+                    const itemCarritoModal = document.createElement('p');
+                    itemCarritoModal.innerText = `${item.nombre} - Cantidad: ${item.cantidad} - $${(item.precio * item.cantidad).toFixed(2)}`;
+                    carritoModal.appendChild(itemCarritoModal);
+                });
+
+
             const totalCompra = document.getElementById('productoPrecio');
-            totalCompra.innerText = `Total: $${total.toFixed(2)}`;
-        }
+            if (totalCompra) {
+                    totalCompra.innerText = `Total: $${total.toFixed(2)}`;
+            }
+        })
+        .catch(error => console.error('Error:', error));
+}
+
     
         function mostrarModalCompra() {
             const modal = new bootstrap.Modal(document.getElementById('compraModal'));

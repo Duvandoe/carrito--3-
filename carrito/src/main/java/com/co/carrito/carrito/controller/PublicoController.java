@@ -84,13 +84,14 @@ public class PublicoController {
 
         // Verificar si es el administrador
     if (usuario.equals("admin") && contrasena.equals("123456")) {
-        session.setAttribute("usuarioLogueado", "admin");
+        session.setAttribute("usuario", "admin");
         return "redirect:/admin/inicio";
     }
     // Verificar si es un usuario registrado (ejemplo con datos ficticios)
     Persona persona = personasRepository.findByUsuario(usuario);
+    session.getAttribute("usuario");
     if (persona != null && persona.getContrasena().equals(contrasena)) {
-        session.setAttribute("usuarioLogueado", persona.getNombre());
+        session.setAttribute("usuario", persona);
         return "redirect:/publico/inicio";
     }
 
@@ -106,6 +107,7 @@ public class PublicoController {
     }
 
     @PostMapping("/compra")
+@ResponseBody
 public String agregarAlCarrito(@RequestParam("productoId") int productoId,
                                @RequestParam(value = "cantidad", defaultValue = "1") int cantidad,
                                HttpSession session) {
@@ -154,6 +156,8 @@ public String agregarAlCarrito(@RequestParam("productoId") int productoId,
     return "Producto agregado al carrito con éxito.";
 }
 
+ 
+
 
 
     @GetMapping("/compras/productos/{productoId}")
@@ -169,16 +173,15 @@ public List<Comprar> obtenerComprasPorProducto(@PathVariable int productoId) {
 
     // Obtener las compras (productos) del carrito
     @GetMapping("/carrito")
-    @ResponseBody
-    public List<Comprar> obtenerCarrito(HttpSession session) {
+@ResponseBody
+public List<Comprar> obtenerCarrito(HttpSession session) {
     Persona persona = (Persona) session.getAttribute("usuario");
     if (persona == null) {
-        return new ArrayList<>(); // Retorna una lista vacía si no hay persona en sesión
+        return new ArrayList<>();
     }
-
-    // Obtener las compras del carrito de la persona
     return carritoService.obtenerComprasPorPersona(persona);
 }
+
 
     
 }
