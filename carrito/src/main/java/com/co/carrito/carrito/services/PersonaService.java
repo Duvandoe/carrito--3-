@@ -8,7 +8,7 @@ public interface PersonaService {
 
     public List<Persona> listarPersonas();
 
-    public void crearPersona(Persona persona); 
+    void crearPersona(Persona persona);
 
     public void borrarPersona(int id);
     
@@ -18,5 +18,9 @@ public interface PersonaService {
     public Persona encontrarPersona(int id);
 
     public Persona actualizarPersona(Persona persona);
+
+    public Persona buscarPorUsuarioYContrasena(String usuario, String contrasena);
+
+    public Persona findByUsuario(String usuario);
 
 }

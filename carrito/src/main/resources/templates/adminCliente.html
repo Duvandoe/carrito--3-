@@ -68,9 +68,11 @@
                     <thead class="table-dark">
                         <tr>
                             <th>ID</th>
+                            <th>Usuario</th>
                             <th>Nombre</th>
                             <th>Apellido</th>
                             <th>Correo</th>
+                            <th>Contraseña</th>
                             <th>Teléfono</th>
                             <th>Acciones</th>
                         </tr>
@@ -78,9 +80,11 @@
                     <tbody id="clientesBody">
                         <tr th:each="persona : ${personas}">
                             <td th:text="${persona.id}">1</td>
+                            <td th:text="${persona.usuario}">Usuario</td>
                             <td th:text="${persona.nombre}">Nombre del cliente</td>
                             <td th:text="${persona.apellido}">Apellido del cliente</td>
                             <td th:text="${persona.correo}">Correo del cliente</td>
+                            <td th:text="${persona.contrasena}">Contraseña del cliente</td>
                             <td th:text="${persona.telefono}">Telefono del cliente</td>
                             <td>
                                 <a th:href="@{/admin/editar/{id}(id=${persona.id})}" class="btn btn-sm btn-warning">Editar</a>

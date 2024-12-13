@@ -16,4 +16,9 @@ public interface CarritoService {
 
     public List<Comprar> listarCompras();
     
+    public List<Comprar> obtenerComprasPorPersona(Persona persona);
+
+    public List<Comprar> obtenerComprasPorProducto(Producto producto);
+
+    public void actualizarCompra(Comprar compra);
 }

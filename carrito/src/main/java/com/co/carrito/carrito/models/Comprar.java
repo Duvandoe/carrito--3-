@@ -15,6 +15,9 @@ import jakarta.persistence.JoinTable;
 import jakarta.persistence.ManyToMany;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.Table;
+import jakarta.persistence.Temporal;
+import jakarta.persistence.TemporalType;
+import jakarta.validation.constraints.Min;
 
 @Entity
 @Table(name = "comprar")
@@ -24,10 +27,12 @@ public class Comprar {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;
 
+    @Min(1)
     private int cantidad;
 
     private Double total;
 
+    @Temporal(TemporalType.TIMESTAMP)
     private Date fecha;
 
     @ManyToOne

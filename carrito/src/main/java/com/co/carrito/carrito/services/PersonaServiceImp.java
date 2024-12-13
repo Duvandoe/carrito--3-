@@ -6,8 +6,12 @@ import java.util.Optional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import com.co.carrito.carrito.UsuarioYaExisteException;
 import com.co.carrito.carrito.models.Persona;
+import com.co.carrito.carrito.models.Rol;
+import com.co.carrito.carrito.models.RolEnum;
 import com.co.carrito.carrito.repository.PersonasRepository;
+import com.co.carrito.carrito.repository.RolRepository;
 
 
 @Service
@@ -16,6 +20,12 @@ public class PersonaServiceImp implements PersonaService {
     @Autowired
     private PersonasRepository personaRepository;
 
+    @Autowired
+    private RolRepository rolRepository;
+
+    @Autowired
+    private RolService rolService;
+
     @Override
     public List<Persona> listarPersonas() {
         return personaRepository.findAll();
@@ -23,9 +33,28 @@ public class PersonaServiceImp implements PersonaService {
 
     @Override
     public void crearPersona(Persona persona) {
-        
-        personaRepository.save(persona);
+    // Verificar si el nombre de usuario ya existe
+    if (personaRepository.existsByUsuario(persona.getUsuario())) {
+        throw new UsuarioYaExisteException("El nombre de usuario ya está registrado");
     }
+
+    // Obtener el rol de "Cliente" usando el RolEnum
+    Rol rolCliente = rolRepository.findByNombrerol(RolEnum.CLIENTE);
+    if (rolCliente == null) {
+        // Crear el rol CLIENTE si no existe
+        rolCliente = new Rol();
+        rolCliente.setNombrerol(RolEnum.CLIENTE);
+        rolCliente = rolRepository.save(rolCliente); // Guardar en la base de datos
+    }
+
+    // Asignar el rol al usuario
+    persona.setRol(rolCliente);
+
+    // Guardar la persona con el rol asignado
+    personaRepository.save(persona);
+}
+
+    
 
     @Override
     public void borrarPersona(int id) {
@@ -61,6 +90,15 @@ public class PersonaServiceImp implements PersonaService {
         return personaRepository.findByNombreContainingIgnoreCase(nombre);
     }
 
+    @Override
+    public Persona buscarPorUsuarioYContrasena(String usuario, String contrasena) {
+        return personaRepository.findByUsuarioAndContrasena(usuario, contrasena);
+    }
+
+    @Override
+    public Persona findByUsuario(String usuario) {
+        return personaRepository.findByUsuario(usuario);
+    }
 }
     
     

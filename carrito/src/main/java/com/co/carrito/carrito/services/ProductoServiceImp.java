@@ -17,9 +17,15 @@ public class ProductoServiceImp implements ProductoService {
     
 	
 	@Autowired
-	private ProductoRepository productoRepository;
+	private final ProductoRepository productoRepository;
     @Autowired
     private FotoService fotoService;
+
+    @Autowired
+    public ProductoServiceImp(ProductoRepository productoRepository) {
+        this.productoRepository = productoRepository;
+    }
+
 
 
 	@Override

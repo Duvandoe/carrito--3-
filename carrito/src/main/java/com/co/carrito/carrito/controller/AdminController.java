@@ -12,8 +12,8 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.multipart.MultipartFile;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import com.co.carrito.carrito.models.Comprar;
 import com.co.carrito.carrito.models.Persona;
@@ -67,23 +67,24 @@ public class AdminController {
         return "adminCompras";
     }
     
-    @PostMapping("/realizar")
-    public String realizarCompra(@RequestParam("personaId") int personaId, 
-                                 @RequestParam("productoId") int productoId,
-                                 @RequestParam("cantidad") int cantidad, 
-                                 Model model) {
-        Persona persona = personaRepository.findById(personaId).orElse(null);
-        Producto producto = productoRepository.findById(productoId).orElse(null);
-    
-        if (persona != null && producto != null) {
-            compraService.crearCompra(persona, producto, cantidad);
-            model.addAttribute("mensaje", "Compra realizada con éxito");
-        } else {
-            model.addAttribute("mensaje", "Error al realizar la compra");
-        }
-    
-        return "redirect:/admin/compras";
+   @PostMapping("/realizar")
+public String realizarCompra(@RequestParam("personaId") int personaId, 
+                             @RequestParam("productoId") int productoId,
+                             @RequestParam("cantidad") int cantidad, 
+                             RedirectAttributes redirectAttributes) {
+    Persona persona = personaRepository.findById(personaId).orElse(null);
+    Producto producto = productoRepository.findById(productoId).orElse(null);
+
+    if (persona != null && producto != null) {
+        compraService.crearCompra(persona, producto, cantidad);
+        redirectAttributes.addFlashAttribute("mensaje", "Compra realizada con éxito");
+    } else {
+        redirectAttributes.addFlashAttribute("mensaje", "Error al realizar la compra");
     }
+
+    return "redirect:/admin/compras";
+}
+
 
     @GetMapping("/productos")
     public String listarProductos(Model model) {
@@ -102,7 +103,7 @@ public class AdminController {
         return "adminCliente";
     }
     @PostMapping("/crearUsuario")
-    public String CrearPersona(@ModelAttribute Persona persona, Model modelo){
+    public String CrearPersona(@ModelAttribute Persona persona) {
         personaService.crearPersona(persona);
         return "redirect:/admin/cliente";
     }
@@ -162,12 +163,16 @@ public class AdminController {
     
 
 
-    @GetMapping("/editar/{id}")
-    public String EditarPersona(@PathVariable int id, Model modelo) {
-        Persona persona = personaService.encontrarPersona(id);
-        modelo.addAttribute("persona", persona); // Añade persona al modelo para el formulario
-        return "Editarpersona";
+@GetMapping("/editar/{id}")
+public String EditarPersona(@PathVariable int id, Model modelo) {
+    Persona persona = personaService.encontrarPersona(id);
+    if (persona == null) {
+        throw new IllegalArgumentException("Persona no encontrada con ID: " + id);
     }
+    modelo.addAttribute("persona", persona);
+    return "Editarpersona";
+}
+
 
     @GetMapping("/editarProducto/{idProducto}")
     public String EditarProducto(@PathVariable int idProducto, Model modelo) {
@@ -187,11 +192,14 @@ public class AdminController {
 
 
     @GetMapping("/buscar")
-    @ResponseBody
-    public List<Persona> buscarPersonas(@RequestParam("nombre") String nombre) {
-        return personaService.buscarPorNombre(nombre);
+    public ResponseEntity<List<Persona>> buscarPersonas(@RequestParam("nombre") String nombre) {
+        List<Persona> personas = personaService.buscarPorNombre(nombre);
+        if (personas.isEmpty()) {
+            return ResponseEntity.noContent().build();
+        }
+        return ResponseEntity.ok(personas);
     }
-
+    
 }
 
 

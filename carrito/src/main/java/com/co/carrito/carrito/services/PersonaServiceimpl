@@ -1,0 +1,63 @@
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+
+@Service
+public class PersonaServiceImpl implements PersonaService {
+
+    private final PersonaRepository personaRepository;
+    private final RolRepository rolRepository;
+
+    @Autowired
+    public PersonaServiceImpl(PersonaRepository personaRepository, RolRepository rolRepository) {
+        this.personaRepository = personaRepository;
+        this.rolRepository = rolRepository;
+    }
+
+    @Override
+    public List<Persona> listarPersonas() {
+        return personaRepository.findAll();
+    }
+
+    @Override
+    public void crearPersona(Persona persona) {
+        // Si la persona no tiene un rol asignado, asignamos uno por defecto
+        if (persona.getRol() == null) {
+            // Verifica si el correo es "admin@gmail.com"
+            if ("admin@gmail.com".equals(persona.getCorreo())) {
+                // Si es admin, asigna el rol de administrador
+                Rol rolAdmin = rolService.obtenerRolPorNombre("Admin");
+                persona.setRol(rolAdmin);
+            } else {
+                // Si no es admin, asigna el rol de cliente
+                Rol rolCliente = rolService.obtenerRolPorNombre("Cliente");
+                persona.setRol(rolCliente);
+            }
+        }
+        personaRepository.save(persona);  // Guarda la persona
+    }
+
+    @Override
+    public void borrarPersona(int id) {
+        personaRepository.deleteById(id);
+    }
+
+    @Override
+    public List<Persona> buscarPorNombre(String nombre) {
+        return personaRepository.findByNombreContainingIgnoreCase(nombre);
+    }
+
+    @Override
+    public Persona encontrarPersona(int id) {
+        return personaRepository.findById(id).orElse(null);
+    }
+
+    @Override
+    public Persona actualizarPersona(Persona persona) {
+        return personaRepository.save(persona);
+    }
+
+    @Override
+    public Persona buscarPorUsuarioYContrasena(String usuario, String contrasena) {
+        return personaRepository.findByUsuarioAndContrasena(usuario, contrasena);
+    }
+}
