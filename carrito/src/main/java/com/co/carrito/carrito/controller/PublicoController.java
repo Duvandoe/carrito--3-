@@ -84,7 +84,7 @@ public class PublicoController {
 
         // Verificar si es el administrador
     if (usuario.equals("admin") && contrasena.equals("123456")) {
-        session.setAttribute("usuario", "admin");
+        session.setAttribute("usuarioadmin", "admin");
         return "redirect:/admin/inicio";
     }
     // Verificar si es un usuario registrado (ejemplo con datos ficticios)
@@ -181,7 +181,5 @@ public List<Comprar> obtenerCarrito(HttpSession session) {
     }
     return carritoService.obtenerComprasPorPersona(persona);
 }
-
-
     
 }

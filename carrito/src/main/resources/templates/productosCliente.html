@@ -266,7 +266,9 @@ function actualizarCarrito() {
         .then(response => response.json())
         .then(data => {
             const carritoDropdown = document.getElementById('productos-carrito-dropdown');
-            carritoDropdown.innerHTML = ''; // Limpiar el carrito.
+            const carritoModal = document.getElementById('productos-carrito-modal');
+            carritoDropdown.innerHTML = '';
+            carritoModal.innerHTML = '';
 
             let total = 0;
             data.forEach(item => {

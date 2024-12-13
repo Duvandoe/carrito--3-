@@ -194,7 +194,11 @@ public String EditarPersona(@PathVariable int id, Model modelo) {
     
     @DeleteMapping("/{id}")
     public ResponseEntity<Void> eliminarCompra(@PathVariable int id) {
-        compraService.borrarCompra(id);
+        try {
+            compraService.borrarCompra(id);
+        } catch (Exception ex) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
+        }
         return ResponseEntity.noContent().build();
     }
 
