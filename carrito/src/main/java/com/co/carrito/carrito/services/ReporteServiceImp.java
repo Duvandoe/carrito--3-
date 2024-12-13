@@ -7,6 +7,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.co.carrito.carrito.repository.PersonasRepository;
+import com.co.carrito.carrito.repository.ProductoRepository;
 
 import net.sf.jasperreports.engine.JRException;
 import net.sf.jasperreports.engine.JasperExportManager;
@@ -20,6 +21,9 @@ public class ReporteServiceImp implements ReporteService {
     @Autowired
     private PersonasRepository personasRepository;
 
+    @Autowired
+    private ProductoRepository productoRepository;
+
     @Override
     public void generarReporte() throws JRException, IOException {
         // Obtener el archivo del reporte Jasper
@@ -32,6 +36,7 @@ public class ReporteServiceImp implements ReporteService {
         JasperExportManager.exportReportToPdfFile(jasperPrint, outputPath);
     }
 }
+
 
 
 

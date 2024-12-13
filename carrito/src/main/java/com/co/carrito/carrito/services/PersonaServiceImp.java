@@ -76,6 +76,7 @@ public class PersonaServiceImp implements PersonaService {
         if (personaOpt.isPresent()) {
             Persona personaExistente = personaOpt.get();
             // Actualiza solo los campos necesarios
+            personaExistente.setUsuario(persona.getUsuario());
             personaExistente.setNombre(persona.getNombre());
             personaExistente.setApellido(persona.getApellido());
             personaExistente.setCorreo(persona.getCorreo());

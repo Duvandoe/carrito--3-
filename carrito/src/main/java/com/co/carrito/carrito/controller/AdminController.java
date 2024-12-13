@@ -217,6 +217,8 @@ public String EditarPersona(@PathVariable int id, Model modelo) {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Error al generar el reporte");
         }
     }
+
+    
     
 }
 
