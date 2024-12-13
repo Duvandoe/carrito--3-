@@ -23,4 +23,6 @@ public interface PersonaService {
 
     public Persona findByUsuario(String usuario);
 
+    public long obtenerCantidadDePersonas();
+
 }

@@ -3,6 +3,7 @@ package com.co.carrito.carrito.repository;
 import java.util.List;
 
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Repository;
 
 import com.co.carrito.carrito.models.Persona;
@@ -13,4 +14,7 @@ public interface PersonasRepository extends JpaRepository<Persona, Integer> {
     Persona findByUsuarioAndContrasena(String usuario, String contrasena);
     boolean existsByUsuario(String usuario);
     Persona findByUsuario(String usuario);
+    @Query("SELECT COUNT(p) FROM Persona p")
+    @Override
+    long count();
 }

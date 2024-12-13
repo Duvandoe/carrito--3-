@@ -82,4 +82,9 @@ public class ProductoServiceImp implements ProductoService {
         return null; // Maneja si la persona no se encuentra
     }
 
+    @Override
+    public long obtenerCantidadDeProductos() {
+        return productoRepository.count();
+    }
+
 }

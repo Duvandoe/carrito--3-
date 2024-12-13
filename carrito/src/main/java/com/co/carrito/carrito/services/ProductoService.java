@@ -17,4 +17,6 @@ public interface ProductoService {
 	public void agregarProducto(Producto producto, MultipartFile file);
 
 	public Producto ActualizarProducto(Producto producto, MultipartFile file);
+
+	public long obtenerCantidadDeProductos();
 }

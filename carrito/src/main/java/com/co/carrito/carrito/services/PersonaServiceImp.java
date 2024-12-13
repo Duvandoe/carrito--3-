@@ -100,6 +100,12 @@ public class PersonaServiceImp implements PersonaService {
     public Persona findByUsuario(String usuario) {
         return personaRepository.findByUsuario(usuario);
     }
+
+    @Override
+    public long obtenerCantidadDePersonas() {
+        return personaRepository.count();
+    }
+
 }
     
     

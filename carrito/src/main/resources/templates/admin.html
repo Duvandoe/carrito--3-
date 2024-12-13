@@ -124,10 +124,111 @@
                         </div>
                     </div>
                 </div>
+                <div class="row my-4">
+                    <div class="col-md-6 mb-4">
+                        <div class="card">
+                            <div class="card-body">
+                                <h5 class="card-title">Cantidad de Clientes</h5>
+                                <canvas id="clientesChart"></canvas>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-6 mb-4">
+                        <div class="card">
+                            <div class="card-body">
+                                <h5 class="card-title">Cantidad de Productos</h5>
+                                <canvas id="productosChart"></canvas>
+                            </div>
+                        </div>
+                    </div>
+                </div>
             </div>
         </div>
     </div>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script>
+        // Función para generar números aleatorios
+        function generarNumeroAleatorio(min, max) {
+            return Math.floor(Math.random() * (max - min + 1)) + min;
+        }
 
+        // Configuración inicial de los gráficos
+        const ctxClientes = document.getElementById('clientesChart').getContext('2d');
+        const ctxProductos = document.getElementById('productosChart').getContext('2d');
+
+        // Gráfico de Clientes
+        const clientesChart = new Chart(ctxClientes, {
+            type: 'line',
+            data: {
+                labels: [],
+                datasets: [{
+                    label: 'Cantidad de Clientes',
+                    data: [],
+                    backgroundColor: '#3498db',
+                    borderColor: '#2980b9',
+                    borderWidth: 1,
+                    fill: false
+                }]
+            },
+            options: {
+                responsive: true,
+                scales: {
+                    y: {
+                        beginAtZero: true
+                    }
+                }
+            }
+        });
+
+        // Gráfico de Productos
+        const productosChart = new Chart(ctxProductos, {
+            type: 'line',
+            data: {
+                labels: [],
+                datasets: [{
+                    label: 'Cantidad de Productos',
+                    data: [],
+                    backgroundColor: '#1abc9c',
+                    borderColor: '#16a085',
+                    borderWidth: 1,
+                    fill: false
+                }]
+            },
+            options: {
+                responsive: true,
+                scales: {
+                    y: {
+                        beginAtZero: true
+                    }
+                }
+            }
+        });
+
+        // Actualización de los gráficos cada 3 segundos
+        setInterval(function() {
+            const nuevoCliente = generarNumeroAleatorio(1, 100);
+            const nuevoProducto = generarNumeroAleatorio(1, 50);
+
+            // Actualizar gráfico de Clientes
+            if (clientesChart.data.labels.length >= 10) {
+                clientesChart.data.labels.shift(); // Eliminar el primer dato para mantener la longitud
+                clientesChart.data.datasets[0].data.shift(); // Eliminar el primer dato de la gráfica
+            }
+            clientesChart.data.labels.push(new Date().toLocaleTimeString());
+            clientesChart.data.datasets[0].data.push(nuevoCliente);
+            clientesChart.update();
+
+            // Actualizar gráfico de Productos
+            if (productosChart.data.labels.length >= 10) {
+                productosChart.data.labels.shift(); // Eliminar el primer dato para mantener la longitud
+                productosChart.data.datasets[0].data.shift(); // Eliminar el primer dato de la gráfica
+            }
+            productosChart.data.labels.push(new Date().toLocaleTimeString());
+            productosChart.data.datasets[0].data.push(nuevoProducto);
+            productosChart.update();
+        }, 3000); // Actualización cada 3 segundos
+
+    </script>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js"></script>
 </body>
 </html>

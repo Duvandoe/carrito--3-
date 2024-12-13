@@ -218,7 +218,14 @@ public String EditarPersona(@PathVariable int id, Model modelo) {
         }
     }
 
-    
+    // Ejemplo de un método en tu controlador para obtener la cantidad de clientes y productos
+    @GetMapping("/admin/iniciodashboard")
+    public String dashboard(Model model) {
+        model.addAttribute("personaCount", personaService.obtenerCantidadDePersonas());
+        model.addAttribute("productosCount", productoService.obtenerCantidadDeProductos());
+        return "adminDashboard";
+    }
+
     
 }
 
